@@ -28,6 +28,13 @@ interface DotPatternProps extends React.SVGProps<SVGSVGElement> {
   cr?: number
   className?: string
   glow?: boolean
+  /**
+   * Radius (px) around the center within which dots get the animated glow.
+   * Dots outside this are skipped entirely — they'd be hidden by a center
+   * mask anyway, so animating them is wasted work. Only applies when
+   * `glow` is true.
+   */
+  glowRadius?: number
   [key: string]: unknown
 }
 
@@ -71,6 +78,7 @@ export function DotPattern({
   cr = 1,
   className,
   glow = false,
+  glowRadius = 320,
   ...props
 }: DotPatternProps) {
   const id = useId()
@@ -90,6 +98,9 @@ export function DotPattern({
     return () => window.removeEventListener("resize", updateDimensions)
   }, [])
 
+  const centerX = dimensions.width / 2
+  const centerY = dimensions.height / 2
+
   const dots = Array.from(
     {
       length:
@@ -99,16 +110,26 @@ export function DotPattern({
     (_, i) => {
       const col = i % Math.ceil(dimensions.width / width)
       const row = Math.floor(i / Math.ceil(dimensions.width / width))
+      const dotX = col * width + cx + x
+      const dotY = row * height + cy + y
       // Deterministic pseudo-random, seeded by position, so this stays pure across renders.
       const seed = Math.sin(col * 127.1 + row * 311.7) * 43758.5453
       const frac = seed - Math.floor(seed)
       return {
-        x: col * width + cx + x,
-        y: row * height + cy + y,
+        x: dotX,
+        y: dotY,
         delay: frac * 5,
         duration: frac * 3 + 2,
       }
     }
+    // A glowing dot pulses forever via its own Motion animation. Most of a
+    // full-section grid sits under the radial mask callers apply and is
+    // never visible, so skip anything outside the glow radius entirely
+    // instead of running thousands of invisible animations.
+  ).filter(
+    (dot) =>
+      !glow ||
+      (dot.x - centerX) ** 2 + (dot.y - centerY) ** 2 <= glowRadius ** 2
   )
 
   return (
