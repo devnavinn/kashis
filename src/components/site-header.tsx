@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Menu, Phone } from "lucide-react";
@@ -13,7 +14,11 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { buildWhatsappLink, phoneHref, phoneDisplay, site } from "@/lib/constants";
+import {
+  buildWhatsappLink,
+  phoneHref,
+  phoneDisplay,
+} from "@/lib/constants";
 import { WhatsAppIcon } from "@/components/whatsapp-icon";
 
 const navLinks = [
@@ -30,8 +35,10 @@ export function SiteHeader() {
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
+
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
+
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
@@ -47,11 +54,20 @@ export function SiteHeader() {
       }`}
     >
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        <Link href="#top" className="flex items-center gap-2 font-heading text-lg font-semibold tracking-tight">
-          <span className="flex h-9 w-9 items-center justify-center rounded-full bg-primary text-primary-foreground text-sm">
-            R
-          </span>
-          {site.shortName}
+        {/* Logo image */}
+        <Link
+          href="#top"
+          aria-label="Go to homepage"
+          className="flex items-center"
+        >
+          <Image
+            src="/icon.png"
+            alt="K Logo"
+            width={160}
+            height={48}
+            priority
+            className="h-10 w-auto object-contain"
+          />
         </Link>
 
         <nav className="hidden items-center gap-8 md:flex">
@@ -73,6 +89,7 @@ export function SiteHeader() {
               {phoneDisplay}
             </Button>
           </a>
+
           <a href={buildWhatsappLink()} target="_blank" rel="noreferrer">
             <Button size="sm" className="gap-2 rounded-full">
               <WhatsAppIcon className="size-4" />
@@ -87,10 +104,20 @@ export function SiteHeader() {
           >
             <Menu className="size-5" />
           </SheetTrigger>
+
           <SheetContent side="right" className="w-[280px]">
             <SheetHeader>
-              <SheetTitle className="font-heading">{site.shortName}</SheetTitle>
+              <SheetTitle>
+                <Image
+                  src="/logo.png"
+                  alt="R Logo"
+                  width={150}
+                  height={45}
+                  className="h-9 w-auto object-contain"
+                />
+              </SheetTitle>
             </SheetHeader>
+
             <nav className="mt-4 flex flex-col gap-1 px-4">
               {navLinks.map((link) => (
                 <SheetClose
@@ -107,6 +134,7 @@ export function SiteHeader() {
                 </SheetClose>
               ))}
             </nav>
+
             <div className="mt-6 flex flex-col gap-2 px-4">
               <a href={`tel:${phoneHref}`}>
                 <Button variant="outline" className="w-full gap-2 rounded-full">
@@ -114,6 +142,7 @@ export function SiteHeader() {
                   {phoneDisplay}
                 </Button>
               </a>
+
               <a href={buildWhatsappLink()} target="_blank" rel="noreferrer">
                 <Button className="w-full gap-2 rounded-full">
                   <WhatsAppIcon className="size-4" />
