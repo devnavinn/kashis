@@ -7,8 +7,8 @@ export const site = {
   tagline: "Kashis artistry for your most beautiful moments",
   city: "Kolkata, India",
   founder: "Kashis Shaw",
-  instagram: "https://instagram.com/kashismehndi",
-  email: "hello@kashismehndi.com",
+  instagram: "https://instagram.com/kashismehendi_artist__",
+  email: "kashisshaw697@gmail.com",
 };
 
 // Digits only, with country code, no spaces or symbols — used for the WhatsApp deep link.
