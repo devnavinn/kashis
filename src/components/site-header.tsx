@@ -62,7 +62,7 @@ export function SiteHeader() {
         >
           <Image
             src="/icon.png"
-            alt="K Logo"
+            alt="Kashis Mehndi Logo"
             width={160}
             height={48}
             priority
@@ -109,8 +109,8 @@ export function SiteHeader() {
             <SheetHeader>
               <SheetTitle>
                 <Image
-                  src="/logo.png"
-                  alt="R Logo"
+                  src="/icon.png"
+                  alt="Kashis Mehndi Logo"
                   width={150}
                   height={45}
                   className="h-9 w-auto object-contain"
